@@ -1,0 +1,18 @@
+{
+  "name": "lytehacks",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "gcloud preview app deploy"
+  },
+  "author": "Trevor Helms",
+  "engines": {
+    "node": "~5.7"
+  },
+  "dependencies": {
+    "hapi": "^13.0.0",
+    "jade": "^1.11.0",
+    "vision": "^4.0.1"
+  }
+}
