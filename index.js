@@ -1,3 +1,10 @@
+/**
+* LyteHacks Backend API (c) 2016 LyteHacks
+*
+* index.js
+* Creates a Hapi server, configures it, and defines route endpoints.
+*/
+
 'use strict';
 
 // Global dependencies
@@ -16,7 +23,7 @@ server.connection({
 
 // All plugins that must be ensured to be loaded before the application runs
 // should be declared in this array
-var plugins = [
+const plugins = [
   Vision,
   Inert,
   {
