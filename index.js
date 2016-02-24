@@ -1,6 +1,6 @@
 'use strict';
 
-// Global dependencies 
+// Global dependencies
 const Hapi = require('hapi');
 const Good = require('good');
 const Joi = require('joi');
@@ -64,6 +64,11 @@ let registrations = [
   }
 ];
 
+/**
+* GET /registrations
+*
+* Return a complete list of registrations
+*/
 server.route({
   method: 'GET',
   path: '/registrations',
@@ -79,21 +84,36 @@ server.route({
   method: 'POST',
   path: '/registrations',
   handler: function(request, reply) {
+    // Assign id to be the next integer not used
     let id = registrations[registrations.length - 1].id + 1;
 
-    let newRegistration = {
+    // Create a registration object based on the payload
+    let registration = {
       id: id,
-      attributes: {
-        name: 'Another User ' + id,
-        github: 'somefancyname' + id,
-        tracks: ['track1'],
-        diet: ['']
-      }
+      attributes: request.payload
     };
 
-    registrations.push(newRegistration);
+    // Add a registration
+    // TODO: Convert this to a model, implement persistant storage
+    registrations.push(registration);
 
-    reply(newRegistration).created('/registrations');
+    // Reply with the newly created object and the collection it belongs to
+    reply({
+      collection: 'registrations',
+      data: registration
+    }).created('/registrations');
+  },
+  config: {
+    validate: {
+      payload: {
+        name: Joi.string().min(1),
+        github: Joi.string().min(1),
+        // The registrant must supply at least one track
+        tracks: Joi.array().items(Joi.string()).min(1),
+        // TODO: Do we want this as an array or as a plain text string?
+        diet: Joi.array().items(Joi.string())
+      }
+    }
   }
 });
 
