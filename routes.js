@@ -38,6 +38,7 @@ exports.register = function(server, options, next) {
     method: 'GET',
     path: '/',
     handler: function(request, reply) {
+      console.log(request.db);
       reply(`I'm so Hapi.`);
     }
   });
