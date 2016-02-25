@@ -14,19 +14,23 @@ let registrations = [
   {
     id: 1,
     attributes: {
-      name: "Trevor Helms",
-      github: "th13",
+      firstName: 'Trevor',
+      lastName: 'Helms',
+      email: 'th13@my.fsu.edu',
       tracks: ['track 0', 'track 2'],
-      diet: ['meat only', 'not gluten free']
+      diet: 'Meat only.',
+      comments: 'I created this.'
     }
   },
   {
     id: 2,
     attributes: {
-      name: 'Nick Simspon',
-      github: 'itsnicksimpson',
+      firstName: 'Nick',
+      lastName: 'Simpson',
+      email: 'itsnicksimpson@gae.com',
       tracks: ['track1', 'track2'],
-      diet: ['vegan']
+      diet: 'Vegan',
+      comments: 'I\'m gae'
     }
   }
 ];
@@ -38,7 +42,6 @@ exports.register = function(server, options, next) {
     method: 'GET',
     path: '/',
     handler: function(request, reply) {
-      console.log(request.db);
       reply(`I'm so Hapi.`);
     }
   });
@@ -84,12 +87,13 @@ exports.register = function(server, options, next) {
     config: {
       validate: {
         payload: {
-          name: Joi.string().min(1),
-          github: Joi.string().min(1),
+          firstName: Joi.string().min(1).required(),
+          lastName: Joi.string().min(1).required(),
+          email: Joi.string().email().required(),
           // The registrant must supply at least one track
-          tracks: Joi.array().items(Joi.string()).min(1),
-          // TODO: Do we want this as an array or as a plain text string?
-          diet: Joi.array().items(Joi.string())
+          tracks: Joi.array().items(Joi.string()).min(1).required(),
+          diet: Joi.string().allow(''),
+          comments: Joi.string().allow('')
         }
       }
     }

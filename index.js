@@ -13,7 +13,6 @@ const Good = require('good');
 const Vision = require('vision');
 const Inert = require('inert');
 const GoodConsole = require('good-console');
-const HapiMongodb = require('hapi-mongodb');
 
 // Local dependencies
 const routes = require('./routes');
@@ -41,15 +40,9 @@ const plugins = [
       }]
     }
   },
-  {
-    register: HapiMongodb,
-    options: {
-      url: 'mongodb://localhost:27017/dev',
-      decorate: 'db'
-    }
-  },
   routes
 ];
+
 
 
 // Register all of our plugins, then set up views, static file serving, and start
