@@ -27,8 +27,8 @@ server.connection({
 
 // Initialize MongoDB connection
 db.connection({
-  host: 'localhost',
-  database: 'dev'
+  host: process.env.NODE_ENV === 'production' ? '162.222.177.139' : 'localhost',
+  database: 'lytehacks'
 });
 
 // All plugins that must be ensured to be loaded before the application runs

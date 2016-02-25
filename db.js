@@ -13,7 +13,7 @@ const Mongoose = require('mongoose');
 * Exports a function that initializes the connection to the database.
 */
 exports.connection = function(dbconf) {
-  Mongoose.connect('mongodb://' + dbconf.host + '/' + dbconf.database);
+  Mongoose.connect('mongodb://' + dbconf.host + ':27017/' + dbconf.database);
 
   const db = Mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error: '));
