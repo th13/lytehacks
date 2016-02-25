@@ -16,11 +16,19 @@ const GoodConsole = require('good-console');
 
 // Local dependencies
 const routes = require('./routes');
+const db = require('./db');
 
 const server = new Hapi.Server();
 
+// Initialize Hapi server
 server.connection({
   port: process.env.PORT || 3000
+});
+
+// Initialize MongoDB connection
+db.connection({
+  host: 'localhost',
+  database: 'dev'
 });
 
 // All plugins that must be ensured to be loaded before the application runs

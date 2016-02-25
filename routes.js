@@ -9,32 +9,9 @@
 
 const Joi = require('joi');
 
-// Example
-let registrations = [
-  {
-    id: 1,
-    attributes: {
-      firstName: 'Trevor',
-      lastName: 'Helms',
-      email: 'th13@my.fsu.edu',
-      tracks: ['track 0', 'track 2'],
-      diet: 'Meat only.',
-      comments: 'I created this.'
-    }
-  },
-  {
-    id: 2,
-    attributes: {
-      firstName: 'Nick',
-      lastName: 'Simpson',
-      email: 'itsnicksimpson@gae.com',
-      tracks: ['track1', 'track2'],
-      diet: 'Vegan',
-      comments: 'I\'m gae'
-    }
-  }
-];
+const Registration = require('./models/registration');
 
+// Note: register is a Hapi keyword, and has nothing to do with registrations.
 exports.register = function(server, options, next) {
   // GET /
   // Doesn't do much useful.
@@ -52,9 +29,11 @@ exports.register = function(server, options, next) {
     method: 'GET',
     path: '/registrations',
     handler: function(request, reply) {
-      reply({
-        collection: 'registrations',
-        data: registrations
+      Registration.find({}).then(function(data) {
+        reply({
+          collection: 'registrations',
+          data: data
+        });
       });
     }
   });
@@ -65,24 +44,15 @@ exports.register = function(server, options, next) {
     method: 'POST',
     path: '/registrations',
     handler: function(request, reply) {
-      // Assign id to be the next integer not used
-      let id = registrations[registrations.length - 1].id + 1;
+      let registration = new Registration(request.payload);
 
-      // Create a registration object based on the payload
-      let registration = {
-        id: id,
-        attributes: request.payload
-      };
-
-      // Add a registration
-      // TODO: Convert this to a model, implement persistant storage
-      registrations.push(registration);
-
-      // Reply with the newly created object and the collection it belongs to
-      reply({
-        collection: 'registrations',
-        data: registration
-      }).created('/registrations');
+      registration.save().then(function(data) {
+        // Reply with the newly created object and the collection it belongs to
+        reply({
+          collection: 'registrations',
+          data: data
+        }).created('/registrations');
+      });
     },
     config: {
       validate: {
