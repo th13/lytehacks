@@ -27,6 +27,7 @@ server.connection({
 
 // Initialize MongoDB connection
 db.connection({
+  // TODO: Change production host IP to use env variables.
   host: process.env.NODE_ENV === 'production' ? '162.222.177.139' : 'localhost',
   database: 'lytehacks'
 });
@@ -74,7 +75,7 @@ server.register(plugins, (err) => {
   // Serve static content
   server.route({
     method: 'GET',
-    path: '/assets/{param*}',
+    path: '/{param*}',
     handler: {
         directory: {
             path: 'public',
