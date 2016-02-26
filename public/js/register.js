@@ -9,13 +9,11 @@
     var data = $(this).serialize();
     console.log(data);
 
-    $.ajax({
-      method: 'POST',
-      url: '/registrations',
-      data: data
-    }).done(function(msg) {
-      console.log('Data saved: ', msg);
-    });
+    $.post('/registrations', data,
+      function success(response) {
+        console.log(response);
+      }
+    );
   });
 
 })(jQuery);
