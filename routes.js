@@ -44,6 +44,7 @@ exports.register = function(server, options, next) {
     method: 'POST',
     path: '/registrations',
     handler: function(request, reply) {
+      console.log(request.payload);
       let registration = new Registration(request.payload);
 
       registration.save().then(function(data) {
